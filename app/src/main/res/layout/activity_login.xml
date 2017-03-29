@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:text="Not set"
+        android:text="@string/saved_username"
         android:textSize="22sp"
         android:gravity="center_horizontal"
         android:background="#ecebeb"
@@ -52,7 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Update name"
-        android:id="@+id/update"/>
+        android:id="@+id/update"
+        android:onClick="setName"/>
 
     <Button
         android:layout_width="match_parent"
