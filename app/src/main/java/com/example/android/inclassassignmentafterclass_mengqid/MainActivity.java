@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void signin(View view)
     {
-        EditText emailField = (EditText) findViewById(R.id.email);
-        EditText passwordField = (EditText) findViewById(R.id.password);
+        final EditText emailField = (EditText) findViewById(R.id.email);
+        final EditText passwordField = (EditText) findViewById(R.id.password);
         final Intent intent = new Intent(this, LoginActivity.class);
 
         mAuth.signInWithEmailAndPassword(emailField.getText().toString(), passwordField.getText().toString())
@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                                 // authenticate with your backend server, if you have one. Use
                                 // FirebaseUser.getToken() instead.
                                 String uid = user.getUid();
+                                emailField.setText("");
+                                passwordField.setText("");
 
                                 Intent intentStart = intent;
                                 intentStart.putExtra("name",name);

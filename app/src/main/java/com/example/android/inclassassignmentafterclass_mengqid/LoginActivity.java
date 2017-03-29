@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import static android.provider.CallLog.Calls.NEW;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,6 +42,13 @@ public class LoginActivity extends AppCompatActivity {
         TextView usernameDisplay = (TextView) findViewById(R.id.name_display);
         usernameDisplay.setText(username);
 
+    }
+
+    public void signOut(View view)
+    {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent (this, MainActivity.class);
+        startActivity(intent);
     }
 
 }
