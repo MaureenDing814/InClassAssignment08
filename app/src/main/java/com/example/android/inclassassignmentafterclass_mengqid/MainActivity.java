@@ -1,5 +1,7 @@
 package com.example.android.inclassassignmentafterclass_mengqid;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -77,6 +83,52 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Toast.makeText(MainActivity.this, "Registration successful!",
                                     Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    public void signin(View view)
+    {
+        EditText emailField = (EditText) findViewById(R.id.email);
+        EditText passwordField = (EditText) findViewById(R.id.password);
+        final Intent intent = new Intent(this, LoginActivity.class);
+
+        mAuth.signInWithEmailAndPassword(emailField.getText().toString(), passwordField.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user != null) {
+                                // Name, email address, and profile photo Url
+                                String name = user.getDisplayName();
+                                String email = user.getEmail();
+                                Uri photoUrl = user.getPhotoUrl();
+
+                                // The user's ID, unique to the Firebase project. Do NOT use this value to
+                                // authenticate with your backend server, if you have one. Use
+                                // FirebaseUser.getToken() instead.
+                                String uid = user.getUid();
+
+                                Intent intentStart = intent;
+                                intentStart.putExtra("name",name);
+                                startActivity(intentStart);
+                            }
                         }
 
                         // ...
