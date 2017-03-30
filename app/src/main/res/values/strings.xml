@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">InClassAssignment(AfterClass)-MengqiD</string>
     <string name="defaultName">Not set</string>
+    <string name="auth_failed"> Authentification failed </string>
 </resources>
