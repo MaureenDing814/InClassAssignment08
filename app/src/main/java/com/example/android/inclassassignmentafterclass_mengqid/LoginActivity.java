@@ -97,6 +97,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mAuth.signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void setName(View view) {
         EditText inputName = (EditText) findViewById(R.id.name);
@@ -104,4 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         myRef.child("name").setValue(username);
         inputName.setText("");
     }
+
+
 }
