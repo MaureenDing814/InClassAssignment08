@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:text="@string/saved_username"
+        android:text="@string/defaultName"
         android:textSize="22sp"
         android:gravity="center_horizontal"
         android:background="#ecebeb"
