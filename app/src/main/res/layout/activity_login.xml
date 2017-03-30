@@ -54,6 +54,6 @@
         android:text="Update name"
         android:id="@+id/update"
         android:onClick="setName"/>
-    
+
 
 </LinearLayout>
