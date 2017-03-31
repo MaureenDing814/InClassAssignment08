@@ -11,6 +11,7 @@
     android:orientation="vertical"
     tools:context="com.example.android.inclassassignmentafterclass_mengqid.MainActivity">
 
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
