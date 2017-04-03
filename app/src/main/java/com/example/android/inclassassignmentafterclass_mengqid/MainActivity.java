@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -66,72 +68,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void register(View view) {
-        EditText emailField = (EditText) findViewById(R.id.email);
-        final String email = emailField.getText().toString();
-        EditText passwordField = (EditText) findViewById(R.id.password);
-        final String password = passwordField.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, "Registration failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Registration successful!",
-                                    Toast.LENGTH_SHORT).show();
-
-//                            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-//                            intent.putExtra("email", email);
-////                            intent.putExtra("password",password);
-//                            startActivity(intent);
-                        }
-
-                        // ...
-                    }
-                });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    public void signin(View view) {
-        EditText emailField = (EditText) findViewById(R.id.email);
-        final String email = emailField.getText().toString();
-        EditText passwordField = (EditText) findViewById(R.id.password);
-        final String password = passwordField.getText().toString();
-
-        Task<AuthResult> authResultTask = mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(MainActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "log in successful!",
-                                    Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-//                            intent.putExtra("email", email);
-////                            intent.putExtra("password",password);
-//                            startActivity(intent);
-                        }
-
-                        // ...
-                    }
-                });
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mAuth.signOut();
+                return true;
+            case R.id.edit:
+                startActivity(new Intent(MainActivity.this, EditProfileActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 
 }

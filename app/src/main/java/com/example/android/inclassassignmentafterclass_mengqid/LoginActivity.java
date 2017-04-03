@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                             // whenever data at this location is updated.
                             String value = dataSnapshot.getValue(String.class);
 
-                            TextView nameDisplay = (TextView) findViewById(R.id.name_display);
+                            TextView nameDisplay = (TextView) findViewById(R.id.name_field);
                             if (value != null) {
                                 nameDisplay.setText(value);
                             } else {
@@ -97,27 +97,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.logout:
-                mAuth.signOut();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     public void setName(View view) {
-        EditText inputName = (EditText) findViewById(R.id.name);
+        EditText inputName = (EditText) findViewById(R.id.name_field);
         String username = inputName.getText().toString();
         myRef.child("name").setValue(username);
         inputName.setText("");

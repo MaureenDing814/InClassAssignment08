@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/edit"
+        android:title="edit"
+        android:icon="@drawable/ic_account_box_white_24dp"
+        app:showAsAction = "always"/>
+
     <item android:id="@+id/logout"
-        android:title="log out"
-        app:showAsAction = "ifRoom"/>
-    <item android:id="@+id/about"
-        android:title="About"
-        app:showAsAction = "never"/>
+        android:title="Log out"
+        android:icon="@drawable/ic_close_white_24dp"
+        app:showAsAction = "always"/>
 
 </menu>

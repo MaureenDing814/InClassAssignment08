@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,13 +46,15 @@
         android:paddingLeft="10dp">
 
         <EditText
+            android:id="@+id/name_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Name"
             android:textSize="20sp"
             android:padding="11dp"/>
 
-        <TextView
+        <EditText
+            android:id="@+id/age_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Age"
@@ -66,15 +69,18 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female"/>
+                android:text="Female"
+                android:id="@+id/female"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Male"/>
+                android:text="Male"
+                android:id="@+id/male"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other"/>
+                android:text="Other"
+                android:id="@+id/other"/>
 
 
         </RadioGroup>
