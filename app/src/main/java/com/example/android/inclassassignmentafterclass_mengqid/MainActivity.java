@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inclassassignmentafterclass_mengqid.R;
@@ -18,11 +19,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef;
     private String TAG = "MainActivity";
 
     @Override
@@ -38,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    myRef =  database.getReference(user.getUid());
+                    displayInfo();
 
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 // ...
             }
@@ -90,6 +101,41 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void displayInfo(){
+        TextView nameDisplay = (TextView) findViewById(R.id.name_field);
+        TextView ageDisplay = (TextView) findViewById(R.id.age_field);
+        TextView genderDisplay = (TextView) findViewById(R.id.gender_field);
+
+        updateField("name",nameDisplay);
+        updateField("age",ageDisplay);
+        updateField("gender",genderDisplay);
+
+    }
+
+    public void updateField(String key, final TextView displayField){
+       myRef.child(key).addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot){
+               // This method is called once with the initial value and again
+               // whenever data at this location is updated.
+               String value = dataSnapshot.getValue(String.class);
+               Log.d(TAG, "Value is: " + value);
+               if(value == null)
+                   displayField.setText("Not set");
+               else displayField.setText(value);
+           }
+
+           @Override
+           public void onCancelled (DatabaseError error)
+           {
+               //Failed to read value
+               Log.w(TAG,"Failed to read value.",error.toException());
+           }
+           });
+       }
+
+
 
 
 }

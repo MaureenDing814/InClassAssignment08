@@ -11,9 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inclassassignmentafterclass_mengqid.MainActivity;
 import com.example.android.inclassassignmentafterclass_mengqid.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,12 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    private String TAG = "LoginActivity";
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef;
-
+    private String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,44 +45,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    myRef = database.getReference(user.getUid());
-
-                    // Read from the database
-                    myRef.child("name").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            String value = dataSnapshot.getValue(String.class);
-
-                            TextView nameDisplay = (TextView) findViewById(R.id.name_field);
-                            if (value != null) {
-                                nameDisplay.setText(value);
-                            } else {
-                                nameDisplay.setText("Not set");
-                            }
-
-                            Log.d(TAG, "Value is: " + value);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                            Log.w(TAG, "Failed to read value.", error.toException());
-                        }
-                    });
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
 
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
                 }
                 // ...
             }
         };
+
+
     }
+
 
 
     @Override
@@ -97,14 +75,72 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void register(View view) {
+        EditText emailField = (EditText) findViewById(R.id.email);
+        final String email = emailField.getText().toString();
+        EditText passwordField = (EditText) findViewById(R.id.password);
+        final String password = passwordField.getText().toString();
 
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-    public void setName(View view) {
-        EditText inputName = (EditText) findViewById(R.id.name_field);
-        String username = inputName.getText().toString();
-        myRef.child("name").setValue(username);
-        inputName.setText("");
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Registration failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Registration successful!",
+                                    Toast.LENGTH_SHORT).show();
+
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            intent.putExtra("email", email);
+////                            intent.putExtra("password",password);
+//                            startActivity(intent);
+                        }
+
+                        // ...
+                    }
+                });
     }
 
+    public void login(View view) {
+        EditText emailField = (EditText) findViewById(R.id.email);
+        final String email = emailField.getText().toString();
+        EditText passwordField = (EditText) findViewById(R.id.password);
+        final String password = passwordField.getText().toString();
+
+        Task<AuthResult> authResultTask = mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(LoginActivity.this, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "log in successful!",
+                                    Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            intent.putExtra("email", email);
+////                            intent.putExtra("password",password);
+//                            startActivity(intent);
+                        }
+
+                        // ...
+                    }
+                });
+
+
+    }
 
 }

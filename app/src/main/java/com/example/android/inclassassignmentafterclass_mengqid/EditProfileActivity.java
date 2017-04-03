@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    myRef = database.getReference(user.getUid());
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -79,6 +80,9 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             gender = "other";
         }
+        myRef.child("gender").setValue(gender);
+        gender="";
+        finish();
     }
 
     @Override
